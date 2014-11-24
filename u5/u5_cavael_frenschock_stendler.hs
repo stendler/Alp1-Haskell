@@ -45,6 +45,17 @@ countCalls n = snd (fibTripleCount n)
       | otherwise = (superFibCount (fibTripleCount (n-1)))
 
 -- TODO: naive Variante aufschreiben :/
+countCallsNaive :: Int -> Int
+countCallsNaive n = snd (superFibNaive (n,1))
+  where
+    addTuple :: (Int,Int) -> (Int,Int) -> (Int,Int)
+    addTuple (x1,y1) (x2,y2) = ((x1+x2),(y1+y2))
+    superFibNaive :: (Int,Int) -> (Int,Int)
+    superFibNaive (0,x) = (0,x)
+    superFibNaive (1,x) = (1,x)
+    superFibNaive (2,x) = (1,x)
+    superFibNaive (n,x) = (addTuple (addTuple (superFibNaive ((n-1),(x+1))) (superFibNaive ((n-2),(x+1)))) (superFibNaive ((n-3),(x+1))))
+
 -- TODO: Aufgabe 1c) vollstaendige Induktion: den Widerspruch fuer die erste Variante aufschreiben!!
 -- TODO: Aufgabe 1c) vollstaendige Induktion der zweiten Aussage fuer effiziente UND naive Implementierung
 
