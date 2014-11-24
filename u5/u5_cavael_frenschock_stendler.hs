@@ -54,10 +54,20 @@ type Zeit = (Int,Int)
 addStd :: Zeit -> Int -> Zeit
 addStd (std,m) add = ((mod (std+add) 24),m)
 
+{-
+teileInts :: Int -> Int -> Int
+teileInts divident divisor = countDiv divident divisor 0
+  where
+    countDiv :: Int -> Int -> Int -> Int
+    countDiv divident divisor count
+      | (divident < 0) = count-1
+      | (divident == 0) = count
+      | otherwise = countDiv (divident-divisor) divisor count+1
+-}  -- man kann auch einfach div nehmen
+
 addMin :: Zeit -> Int -> Zeit
-addMin (s,m) addM
-  | (addM<0) = (s,m)
-  | ((m+addM)>59) = (addMin (addStd (s,m) ((m+addM)/60)) (mod (m+addM) 60))
+addMin (s,m) addM -- wir gehen laut Aufgabenstellung davon aus, dass es keine negativen Eingaben gibt
+  | ((m+addM)>59) = (addMin (addStd (s,0) (div (m+addM) 60)) (mod (m+addM) 60))
   | otherwise = (s,m+addM)
 
 --b)
@@ -75,5 +85,16 @@ dauer :: Zeit -> Zeit -> Zeit
 dauer (s0,m0) (s1,m1) = (dauerS s0 s1,dauerM m0 m1)
 
 --c)
+intToString :: Int -> [Char]
+intToString i
+  | (i<0) = error "nur natuerliche zahlen"
+  | (i<10) = [chr (0+48)]++[chr (i+48)] -- fuehrende Null
+  | otherwise = addToString i []
+  where
+    addToString :: Int -> [Char] -> [Char]
+    addToString i s
+      | (i<10) = [chr (i+48)]++s
+      | otherwise = addToString (div i 10) ([chr((mod i 10)+48)]++s)
+
 anzeige :: Zeit -> [Char]
-anzeige (s,m) = [chr(s+48),':',chr(m+48),' ','U','h','r']
+anzeige (s,m) = ((intToString s)++":"++(intToString m)++" Uhr")
