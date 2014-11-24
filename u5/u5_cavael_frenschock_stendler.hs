@@ -35,14 +35,14 @@ superFib n = fsTriple (fibTriple n)
 
 --b)
 countCalls :: Int -> Int
-countCalls n = snd (fibTripleCount n 0)
+countCalls n = snd (fibTripleCount n)
   where
     superFibCount :: ((Int,Int,Int),Int) -> ((Int,Int,Int),Int)
-    superFibCount ((a0,a1,a2),i) = ((a1,a2,a0+a1+a2),i)
-    fibTripleCount :: Int -> Int -> ((Int,Int,Int),Int)
-    fibTripleCount n i
-      | n==0 = ((0,0,1), (i+1))
-      | otherwise = (superFibCount (fibTripleCount (n-1) (i+1)))
+    superFibCount ((a0,a1,a2),i) = ((a1,a2,a0+a1+a2),(i+1))
+    fibTripleCount :: Int -> ((Int,Int,Int),Int)
+    fibTripleCount n
+      | n==0 = ((0,0,1), 0)
+      | otherwise = (superFibCount (fibTripleCount (n-1)))
 
 
 
@@ -98,3 +98,53 @@ intToString i
 
 anzeige :: Zeit -> [Char]
 anzeige (s,m) = ((intToString s)++":"++(intToString m)++" Uhr")
+
+--Aufgabe 3
+
+-- deleteABs
+deleteABs :: [Char] -> [Char]
+deleteAbs [] = []
+deleteABs ['A'] = []
+deleteABs ['B'] = []
+deleteABs [c] = [c]
+deleteABs (c:cs)
+  | (c=='A' || c=='B') = deleteABs cs
+  | otherwise = c : deleteABs cs
+
+--doubleDigits
+doubleDigits :: [Char] -> [Char]
+doubleDigits [] = []
+doubleDigits (c:cs)
+  | (ord c >=48 && ord c <= 57) = c : c : doubleDigits cs
+  | otherwise = c : doubleDigits cs
+
+--shiftDigits
+shiftDigits :: [Char] -> [Char]
+shiftDigits [] = []
+shiftDigits (c:cs)
+  | (ord c >=48 && ord c <= 56) = chr((ord c)+1) : shiftDigits cs
+  | (ord c == 57) = '0' : shiftDigits cs
+  | otherwise = c : shiftDigits cs
+
+-- Aufgabe 4
+
+-- a)
+countPos :: [Int] -> Int
+countPos [] = 0
+countPos (n:ns)
+  | (n>0) = (countPos ns)+1
+  | otherwise = countPos ns
+
+-- b)
+monIncrPrefix :: [Int] -> [Int]
+monIncrPrefix [] = []
+monIncrPrefix [x] = [x]
+monIncrPrefix (x:x2:xs)
+  | (x<=x2) = x : monIncrPrefix (x2:xs)
+  | otherwise = [x]
+
+-- c)
+parSum :: [Int] -> [Int]
+parSum [] = []
+parSum [x] = [x]
+parSum (x:x2:xs) = x:(parSum ((x+x2):xs))
