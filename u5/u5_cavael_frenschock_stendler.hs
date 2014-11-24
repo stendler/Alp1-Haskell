@@ -44,7 +44,9 @@ countCalls n = snd (fibTripleCount n)
       | n==0 = ((0,0,1), 0)
       | otherwise = (superFibCount (fibTripleCount (n-1)))
 
-
+-- TODO: naive Variante aufschreiben :/
+-- TODO: Aufgabe 1c) vollstaendige Induktion: den Widerspruch fuer die erste Variante aufschreiben!!
+-- TODO: Aufgabe 1c) vollstaendige Induktion der zweiten Aussage fuer effiziente UND naive Implementierung
 
 --Aufgabe 2
 
