@@ -2,6 +2,8 @@
 -- Tutor : Ha Do
 -- Bearbeiter: Jasmine Cavael, Canel Frenschock, Maximilian Stendler
 
+import Data.Char
+
 -- Aufgabe 2
 {-Implementieren Sie die folgenden Funktionen mit Listenrekursion (d.h. ohne Verwen-
 dung von vordefinierten Funktionen bis auf die Funktion elem)-}
@@ -97,18 +99,29 @@ prodOf2Primes n = deleteRepetitionsInt prodList
     --Liste aller Primzahlen von 2 bis div n 2
     primList = [x | x <- [2..(div n 2)], prim x]
     prodList = [x | x <- [4..n], y1 <- primList,y2 <- primList, y1*y2==x]
-{-}
+
 {-b) Die Funktion squareNearlyInt soll fuer einen positiven Float-
 Wert x mit hoechstens einer Stelle hinter dem Komma die Liste aller Float-Werte y
 erstellen, die auch hoechstens eine Stelle hinter dem Komma haben, die Ungleichung
-0 ≤ y ≤ x erfuellen und deren Quadrat h ̈ochstens 0.01 von einer ganzen Zahl entfernt
+0 ≤ y ≤ x erfuellen und deren Quadrat hoechstens 0.01 von einer ganzen Zahl entfernt
 ist.-}
+--eingabe ueberpruefen, ob eine Zahl mit max einer Stelle nach dem Komma
 squareNearlyInt :: Float -> [Float]
-squareNearlyInt
+squareNearlyInt x = [y | y <- [0.0,0.1..x],inIntRange (y*y) (nearestInt y*y)]
+  where
+    nearestInt :: Float -> Float
+    nearestInt f
+      | f < 0.5 = 0
+      | otherwise = 1 + nearestInt (f-1)
+    inIntRange :: Float -> Float -> Bool
+    inIntRange r near
+      | (r == near) = True
+      | ((r > near) && ((r - near) <= 0.01)) = True
+      | ((r < near) && ((near - r) <= 0.01)) = True
+      | otherwise = False
 
 {-c) Die Funktion mirrorCapitals extrahiert alle Großbuch-
 staben aus einem String (alle anderen Zeichen werden gestrichen) und spiegelt sie danach
 in der Mitte (d.h. ’A’ zu ’Z’, ’B’ zu ’Y’ usw.).-}
 mirrorCapitals :: String -> String
-mirrorCapitals
--}
+mirrorCapitals s = [chr (90 - (ord c) + 65) | c <- s,(((ord c) > 64) && ((ord c) < 91))]
