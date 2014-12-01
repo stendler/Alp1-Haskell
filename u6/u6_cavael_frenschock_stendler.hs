@@ -16,7 +16,10 @@ ignoreDoublings (x1:x2:xs)
 {-b) deleteRepetitions soll jedes Zeichen, dass im Eingabestring vorkommt, nur einmal
 in den Ausgabestring setzen also z.B. fuer die Eingabe "abbacxxxax" den String "abcx"
 (oder eine Permutation dieses Strings) ausgeben.-}
-deleteRepetitions
+deleteRepetitions [] = []
+deleteRepetitions (c:cs)
+  | (elem c cs) = deleteRepetitions cs
+  | otherwise = c : deleteRepetitions cs
 
 {-c) onlySingles soll nur die Zeichen in den Ausgabestring setzen, die im Eingabestring
 genau einmal vorkommen, also z.B. fuer die Eingabe "abbacxxxax" den String "c" aus-
