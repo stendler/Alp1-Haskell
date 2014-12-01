@@ -9,12 +9,13 @@ ignoreDoublings, deleteRepetitions, onlySingles :: String -> String
 --a)ignoreDoublings soll alle Doppel- und Mehrfachzeichen durch ein einzelnes ersetzen,
 --also z.B. fuer die Eingabe "abbacxxxax" den String "abacxax" ausgeben.
 ignoreDoublings [] = []
+ignoreDoublings [x] = [x]
 ignoreDoublings (x1:x2:xs)
   | (x1==x2) = ignoreDoublings (x2:xs)
   | otherwise = x1:ignoreDoublings (x2:xs)
 
 {-b) deleteRepetitions soll jedes Zeichen, dass im Eingabestring vorkommt, nur einmal
-in den Ausgabestring setzen also z.B. fuer die Eingabe "abbacxxxax" den String "abcx"
+in den Ausgabestring setzen also z.B. fuer die] Eingabe "abbacxxxax" den String "abcx"
 (oder eine Permutation dieses Strings) ausgeben.-}
 deleteRepetitions [] = []
 deleteRepetitions (c:cs)
@@ -24,7 +25,17 @@ deleteRepetitions (c:cs)
 {-c) onlySingles soll nur die Zeichen in den Ausgabestring setzen, die im Eingabestring
 genau einmal vorkommen, also z.B. fuer die Eingabe "abbacxxxax" den String "c" aus-
 geben.-}
-onlySingles
+onlySingles [] = []
+onlySingles [x] = [x]
+onlySingles (x1:xs)
+  | (elem x1 xs) = onlySingles (delete x1 xs)
+  | otherwise = x1:onlySingles (x2:xs)
+  where
+    delete :: Int -> [Int] -> [Int]
+    delete x [] = []
+    delete x (y:ys)
+      | (x==y) = delete x ys
+      | otherwise = y : (delete x ys)
 
 {-d) Implementieren Sie die Listenfunktion countSymbols :: String -> [(Char,Int)]
 mit der fuer alle in der Liste auftretenden Symbole deren Vielfachheit bestimmt wird,
