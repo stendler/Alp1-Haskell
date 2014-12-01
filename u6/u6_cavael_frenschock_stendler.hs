@@ -29,9 +29,9 @@ onlySingles [] = []
 onlySingles [x] = [x]
 onlySingles (x1:xs)
   | (elem x1 xs) = onlySingles (delete x1 xs)
-  | otherwise = x1:onlySingles (x2:xs)
+  | otherwise = x1:onlySingles xs
   where
-    delete :: Int -> [Int] -> [Int]
+    delete :: Char -> String -> String
     delete x [] = []
     delete x (y:ys)
       | (x==y) = delete x ys
@@ -42,7 +42,16 @@ mit der fuer alle in der Liste auftretenden Symbole deren Vielfachheit bestimmt 
 z.B. soll fuer die Eingabe "abbacxxxax" die Liste [(’a’,3),(’b’,2),(’c’,1),(’x’,4)]
 ausgegeben werden.-}
 countSymbols :: String -> [(Char,Int)]
-countSymbols
+countSymbols s = tpl (s,[])
+  where
+    incrTplLst :: Char -> [(Char,Int)] -> [(Char,Int)]
+    incrTplLst c [] = [(c,1)]
+    incrTplLst c ((c2,i):cis)
+      |  (c==c2) = ((c2,i+1):cis)
+      | otherwise = (c2,i):incrTplLst c cis
+    tpl :: (String,[(Char,Int)]) -> [(Char,Int)]
+    tpl ([],l) = l
+    tpl ((s:ss),l) = tpl (ss,(incrTplLst s l))
 
 --Aufgabe 3
 {-Die folgenden Funktionen sollen mit Hilfe der ZF-Notation implementiert werden, wobei
@@ -50,9 +59,45 @@ Sie selbst herausfinden muessen, welche Hilfsfunktionen dazu benoetigt werden:
 a) Die Funktion prodOf2Primes berechnet bei Eingabe n die Liste
 aller Zahlen aus [4..n], deren Primproduktzerlegung aus genau zwei Faktoren besteht
 (also fuer n = 14 die Liste [4,6,9,10,14]).-}
-prodOf2Primes :: Int -> [Int]
-prodOf2Primes
 
+-- unsere variante vom 3. uebungszettel
+prim :: Int -> Bool
+prim n
+  | (n<=1) = False
+  | (n==2) = True
+  | otherwise = help 2 n
+  where
+    help :: Int -> Int -> Bool
+    help pos n
+      | (mod n pos == 0) = False
+      | ((pos >= (sqrtI n)) && ((mod n pos) /=0)) = True
+      | otherwise = help (pos+1) n
+
+-- wurzel ziehen
+intSqrt :: Int -> Int -> Int
+intSqrt n a
+  | (a*a == n) = a
+  | (a*a >= n) = a-1
+  | otherwise = intSqrt n (a+1)
+
+sqrtI :: Int -> Int
+sqrtI n = intSqrt n 0
+
+-- aus 1b nur fuer Int
+deleteRepetitionsInt :: [Int] -> [Int]
+deleteRepetitionsInt [] = []
+deleteRepetitionsInt (c:cs)
+  | (elem c cs) = deleteRepetitionsInt cs
+  | otherwise = c : deleteRepetitionsInt cs
+
+--eigentliche aufgabe a:
+prodOf2Primes :: Int -> [Int]
+prodOf2Primes n = deleteRepetitionsInt prodList
+  where
+    --Liste aller Primzahlen von 2 bis div n 2
+    primList = [x | x <- [2..(div n 2)], prim x]
+    prodList = [x | x <- [4..n], y1 <- primList,y2 <- primList, y1*y2==x]
+{-}
 {-b) Die Funktion squareNearlyInt soll fuer einen positiven Float-
 Wert x mit hoechstens einer Stelle hinter dem Komma die Liste aller Float-Werte y
 erstellen, die auch hoechstens eine Stelle hinter dem Komma haben, die Ungleichung
@@ -66,3 +111,4 @@ staben aus einem String (alle anderen Zeichen werden gestrichen) und spiegelt si
 in der Mitte (d.h. ’A’ zu ’Z’, ’B’ zu ’Y’ usw.).-}
 mirrorCapitals :: String -> String
 mirrorCapitals
+-}
