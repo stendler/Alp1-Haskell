@@ -3,10 +3,15 @@
 -- Bearbeiter: Jasmine Cavael, Canel Frenschock, Maximilian Stendler
 
 -- Aufgabe 2
+{-Implementieren Sie die folgenden Funktionen mit Listenrekursion (d.h. ohne Verwen-
+dung von vordefinierten Funktionen bis auf die Funktion elem)-}
 ignoreDoublings, deleteRepetitions, onlySingles :: String -> String
 --a)ignoreDoublings soll alle Doppel- und Mehrfachzeichen durch ein einzelnes ersetzen,
 --also z.B. fuer die Eingabe "abbacxxxax" den String "abacxax" ausgeben.
-ignoreDoublings
+ignoreDoublings [] = []
+ignoreDoublings (x1:x2:xs)
+  | (x1==x2) = ignoreDoublings (x2:xs)
+  | otherwise = x1:ignoreDoublings (x2:xs)
 
 {-b) deleteRepetitions soll jedes Zeichen, dass im Eingabestring vorkommt, nur einmal
 in den Ausgabestring setzen also z.B. fuer die Eingabe "abbacxxxax" den String "abcx"
