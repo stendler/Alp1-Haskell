@@ -1,4 +1,4 @@
--- Uebung 05 -- Alp1: Funktionale Programmierung
+-- Uebung 06 -- Alp1: Funktionale Programmierung
 -- Tutor : Ha Do
 -- Bearbeiter: Jasmine Cavael, Canel Frenschock, Maximilian Stendler
 
