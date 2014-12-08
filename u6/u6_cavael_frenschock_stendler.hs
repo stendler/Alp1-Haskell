@@ -106,8 +106,14 @@ erstellen, die auch hoechstens eine Stelle hinter dem Komma haben, die Ungleichu
 0 ≤ y ≤ x erfuellen und deren Quadrat hoechstens 0.01 von einer ganzen Zahl entfernt
 ist.-}
 --eingabe ueberpruefen, ob eine Zahl mit max einer Stelle nach dem Komma
+floatList :: Float -> [Float] -> [Float]
+floatList 0 l = 0:l
+floatList fl l
+  | fl >= 0 = floatList (fl-0.1) (fl:l)
+  | otherwise = l
+
 squareNearlyInt :: Float -> [Float]
-squareNearlyInt x = [y | y <- [0.0,0.1..x],inIntRange (y*y) (nearestInt y*y)]
+squareNearlyInt x = [y | y <- (floatList x []),inIntRange (y*y) (nearestInt y*y)]
   where
     nearestInt :: Float -> Float
     nearestInt f
