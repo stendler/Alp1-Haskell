@@ -9,3 +9,10 @@ delMax [] = []
 delMax (x:xs)
   | (x==maximum (x:xs)) = xs
   | otherwise = x : (delMax xs)
+
+selStep :: ([Int],[Int]) -> ([Int],[Int])
+selStep ([],out) = ([],out)
+selStep (inp,out) = selStep (delMax inp,(maximum inp):out)
+
+selSort :: [Int]->[Int]
+selSort inp = selStep (inp,[])
