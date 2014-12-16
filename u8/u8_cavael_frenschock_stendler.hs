@@ -80,3 +80,11 @@ maxlol [] [] = []
 maxlol x [] = x
 maxlol [] x = x
 maxlol (x:xs) (y:ys) = (maxList (x,y)):(maxlol xs ys)
+
+--aufgabe 4
+eea :: Int -> Int -> (Int,Int)
+eea m n
+  | (n==0) = (m,1,0)
+  | otherwise = (t,s - (div m n) * t)
+  where
+    (s,t) = eea n (mod m n)
