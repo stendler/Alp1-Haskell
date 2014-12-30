@@ -5,8 +5,9 @@
 --Aufgabe 2: Algebraische Typen I
 {-Der algebraischen Datentyp Figur aus dem Skript wird so modifiziert, dass man konkrete
 Kreise und Rechtecke darstellen kann: -}
+type Point =(Float,Float)
 data FigInPlane = Kreis Point Float | Rechteck Point Float Float
-{-Dabei werden mit -}type Point =(Float,Float) {-Punkte in der Ebene dargestellt, die
+{-Dabei werden mit type Point =(Float,Float) Punkte in der Ebene dargestellt, die
 jeweils den Mittelpunkt der Figur festlegen. Darueber hinaus soll Rechteck p a b ein
 achsenparalleles Rechteck mit horizontaler Ausdehnung a und vertikaler Ausdehnung b
 repraesentieren.
@@ -18,16 +19,24 @@ zweiten enthalten ist.-}
 fitsInto :: FigInPlane -> FigInPlane -> Bool
 fitsInto (Rechteck (p1,q1) a1 b1) (Rechteck (p2,q2) a2 b2)
   | (a1 < 0) = fitsInto (Rechteck (p1+a1,q1) (abs a1) b1) (Rechteck (p2,q2) a2 b2)
-  | (b1 < 0) = fitsInto (Rechteck (p1,q1+b1)) a1 (abs b1) (Rechteck (p2,q2) a2 b2)
+  | (b1 < 0) = fitsInto (Rechteck (p1,q1+b1) a1 (abs b1)) (Rechteck (p2,q2) a2 b2)
   | (a2 < 0) = fitsInto (Rechteck (p1,q1) a1 b1) (Rechteck (p2+a2,q2) (abs a2) b2)
   | (b2 < 0) = fitsInto (Rechteck (p1,q1) a1 b1) (Rechteck (p2,q2+b2) a2 (abs b2))
-  | ((p1>=p2) & (q1>=q2) {-& (p1<=(p2+a2)) & (q1<=(q2+b2))-} & ((p1+a1)<=(p2+a2)) & ((q1+b1)<=(q2+b2))) = True
+  | ((p1>=p2) && (q1>=q2) {-& (p1<=(p2+a2)) & (q1<=(q2+b2))-} && ((p1+a1)<=(p2+a2)) && ((q1+b1)<=(q2+b2))) = True
   | otherwise = False    -- endpunkte bestimmen (p1+a1,q1+b1) --> liegen anfangs und endpunkte von darin?
 fitsInto (Kreis (p1,q1) r1) (Kreis (p2,q2) r2)
   | (r1 > r2) = False
   | (r1+(sqrt (((max p1 p2) - (min p1 p2))^2 + ((max q1 q2) - (min q1 q2))^2))) <= r2 = True
   | otherwise = False
-
+fitsInto (Kreis (p1,q1) r) rechteck = fitsInto (Rechteck (p1-r,q1-r) (2*r) (2*r)) rechteck
+fitsInto (Rechteck (x,y) a b) (Kreis (p2,q2) r) -- alle 4 eckpunkte des rechtecks muessen auf oder innerhalb des kreises sein
+  | (dInC (x,y)) && (dInC (x+a,y)) && (dInC (x,y+b)) && (dInC (x+a,y+b)) = True
+  | otherwise = False
+  where
+    dInC :: Point -> Bool
+    dInC (p1,q1)
+      | (sqrt (((max p1 p2) - (min p1 p2))^2 + ((max q1 q2) - (min q1 q2))^2)) <= r = True
+      | otherwise = False
   {-
   Rechteck (0,0)  1  1  <-- Normalform
   Rechteck (1,1) -1 -1
@@ -40,4 +49,4 @@ fitsInto (Kreis (p1,q1) r1) (Kreis (p2,q2) r2)
   Liegt (p1,q1) innerhalb (Kreis (p2,q2) (r2-r1)) ?
 
   -}
-transformFitsInto :: FigInPlane -> FigInPlane -> Bool
+--transformFitsInto :: FigInPlane -> FigInPlane -> Bool
