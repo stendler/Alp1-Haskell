@@ -24,7 +24,9 @@ fitsInto (Rechteck (p1,q1) a1 b1) (Rechteck (p2,q2) a2 b2)
   | ((p1>=p2) & (q1>=q2) {-& (p1<=(p2+a2)) & (q1<=(q2+b2))-} & ((p1+a1)<=(p2+a2)) & ((q1+b1)<=(q2+b2))) = True
   | otherwise = False    -- endpunkte bestimmen (p1+a1,q1+b1) --> liegen anfangs und endpunkte von darin?
 fitsInto (Kreis (p1,q1) r1) (Kreis (p2,q2) r2)
-  
+  | (r1 > r2) = False
+  | (r1+(sqrt (((max p1 p2) - (min p1 p2))^2 + ((max q1 q2) - (min q1 q2))^2))) <= r2 = True
+  | otherwise = False
 
   {-
   Rechteck (0,0)  1  1  <-- Normalform
@@ -32,5 +34,10 @@ fitsInto (Kreis (p1,q1) r1) (Kreis (p2,q2) r2)
   Rechteck (0,1)  1 -1
   Rechteck (1,0) -1  1
   --> Alles gleiche Rechtecke
+
+  r1 > r2 = False
+  r1 == r2 & p1 == p2 & q1 == q2 = True
+  Liegt (p1,q1) innerhalb (Kreis (p2,q2) (r2-r1)) ?
+
   -}
 transformFitsInto :: FigInPlane -> FigInPlane -> Bool
