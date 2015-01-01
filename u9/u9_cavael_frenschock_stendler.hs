@@ -49,4 +49,10 @@ fitsInto (Rechteck (x,y) a b) (Kreis (p2,q2) r) -- alle 4 eckpunkte des rechteck
   Liegt (p1,q1) innerhalb (Kreis (p2,q2) (r2-r1)) ?
 
   -}
---transformFitsInto :: FigInPlane -> FigInPlane -> Bool
+transformFitsInto :: FigInPlane -> FigInPlane -> Bool
+transformFitsInto (Kreis _ r1) (Kreis _ r2)
+  |  r1 <= r2 = True
+  | otherwise = False
+transformFitsInto (Kreis _ r) (Rechteck _ a b) = fitsInto (Kreis (a/2,b/2) r) (Rechteck (0,0) a b)
+transformFitsInto (Rechteck _ a b) (Kreis _ r) = fitsInto (Rechteck ((-a/2),(-b/2)) a b) (Kreis (0,0) r)
+transformFitsInto (Rechteck _ a1 b1) (Rechteck _ a2 b2) = fitsInto (Rechteck (0,0) (min (abs a1) (abs b1)) (max (abs a1) (abs b1))) (Rechteck (0,0) (min (abs a2) (abs b2)) (max (abs a2) (abs b2)))
