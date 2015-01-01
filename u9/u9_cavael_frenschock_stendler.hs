@@ -87,17 +87,15 @@ checkIntegral (Compose c Empty) = checkIntegral (Single c)
 checkIntegral (Compose c p) = checkIntegral (Single c) && checkIntegral p
 
 palToInt :: Palindrom -> Int
-palToInt Empty = error "Palindrom ist keine Zahl!"
-palToInt (Single c)
-  | checkIntegral (Single c) = ord c - 48
-  | otherwise = error "Palindrom ist keine Zahl!"
-palToInt (Compose c Empty)
-  | checkIntegral (Single c) = num*10+num
+palToInt p
+  | checkIntegral p = toIntHelp p
   | otherwise = error "Palindrom ist keine Zahl!"
   where
-    num = palToInt (Single c)
-palToInt (Compose c p)
-  | checkIntegral (Compose c p) = num*10^((palLength (Compose c p))-1) + (palToInt p)*10 + num
-  | otherwise = error "Palindrom ist keine Zahl!"
-  where
-    num = palToInt (Single c)
+    toIntHelp :: Palindrom -> Int
+    toIntHelp (Single c) = ord c - 48
+    toIntHelp (Compose c Empty) = num*10+num
+    where
+      num = palToInt (Single c)
+    toIntHelp (Compose c p) = num*10^((palLength (Compose c p))-1) + (palToInt p)*10 + num
+    where
+      num = palToInt (Single c)
