@@ -56,3 +56,16 @@ transformFitsInto (Kreis _ r1) (Kreis _ r2)
 transformFitsInto (Kreis _ r) (Rechteck _ a b) = fitsInto (Kreis (a/2,b/2) r) (Rechteck (0,0) a b)
 transformFitsInto (Rechteck _ a b) (Kreis _ r) = fitsInto (Rechteck ((-a/2),(-b/2)) a b) (Kreis (0,0) r)
 transformFitsInto (Rechteck _ a1 b1) (Rechteck _ a2 b2) = fitsInto (Rechteck (0,0) (min (abs a1) (abs b1)) (max (abs a1) (abs b1))) (Rechteck (0,0) (min (abs a2) (abs b2)) (max (abs a2) (abs b2)))
+
+--Aufgabe 3 - Algebraische Typen II
+{-Implementieren Sie fuer den im Vorlesungsskript definierten Datentyp Palindrom die fol-
+genden Funktionen, die direkt, also ohne Nutzung der Funktion palToString definiert
+werden sollen:
+palLength :: Palindrom->Int fuer die Laenge des Strings,
+checkIntegral :: Palindrom->Bool ueberprueft, ob der String eine ganze Zahl darstellt,
+palToInt :: Palindrom->Int bestimmt (falls moeglich) die durch den String darge-
+stellte ganze Zahl und erzeugt sonst eine Fehlermeldung,
+numberOfChanges :: Palindrom->Int z ̈ahlt die Anzahl der Symbolwechsel beim
+Lesen des Strings, also z.B. 2 fuer das Palindrom aabbbaa und 4 fuer das Palindrom
+abbabba. Beachten Sie dabei, dass der String nicht erzeugt werden soll, sondern die
+Funktion nur mit den Konstruktoren des Datentyps Palindrom realisiert werden muss.-}
