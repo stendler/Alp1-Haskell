@@ -2,6 +2,8 @@
 -- Tutor : Ha Do
 -- Bearbeiter: Jasmine Cavael, Canel Frenschock, Maximilian Stendler
 
+import Data.Char
+
 --Aufgabe 2: Algebraische Typen I
 {-Der algebraischen Datentyp Figur aus dem Skript wird so modifiziert, dass man konkrete
 Kreise und Rechtecke darstellen kann: -}
@@ -65,7 +67,37 @@ palLength :: Palindrom->Int fuer die Laenge des Strings,
 checkIntegral :: Palindrom->Bool ueberprueft, ob der String eine ganze Zahl darstellt,
 palToInt :: Palindrom->Int bestimmt (falls moeglich) die durch den String darge-
 stellte ganze Zahl und erzeugt sonst eine Fehlermeldung,
-numberOfChanges :: Palindrom->Int z ̈ahlt die Anzahl der Symbolwechsel beim
+numberOfChanges :: Palindrom->Int zaehlt die Anzahl der Symbolwechsel beim
 Lesen des Strings, also z.B. 2 fuer das Palindrom aabbbaa und 4 fuer das Palindrom
 abbabba. Beachten Sie dabei, dass der String nicht erzeugt werden soll, sondern die
 Funktion nur mit den Konstruktoren des Datentyps Palindrom realisiert werden muss.-}
+data Palindrom = Empty | Single Char | Compose Char Palindrom
+
+palLength :: Palindrom -> Int
+palLength Empty = 0
+palLength (Single c) = 1
+palLength (Compose c p) = 2+(palLength p)
+
+checkIntegral :: Palindrom -> Bool
+checkIntegral Empty = False
+checkIntegral (Single c)
+  | ((ord c) >= 48) && (ord c <= 57) = True
+  | otherwise = False
+checkIntegral (Compose c Empty) = checkIntegral (Single c)
+checkIntegral (Compose c p) = checkIntegral (Single c) && checkIntegral p
+
+palToInt :: Palindrom -> Int
+palToInt Empty = error "Palindrom ist keine Zahl!"
+palToInt (Single c)
+  | checkIntegral (Single c) = ord c - 48
+  | otherwise = error "Palindrom ist keine Zahl!"
+palToInt (Compose c Empty)
+  | checkIntegral (Single c) = num*10+num
+  | otherwise = error "Palindrom ist keine Zahl!"
+  where
+    num = palToInt (Single c)
+palToInt (Compose c p)
+  | checkIntegral (Compose c p) = num*10^((palLength (Compose c p))-1) + (palToInt p)*10 + num
+  | otherwise = error "Palindrom ist keine Zahl!"
+  where
+    num = palToInt (Single c)
