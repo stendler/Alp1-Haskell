@@ -94,19 +94,19 @@ palToInt p
     toIntHelp :: Palindrom -> Int
     toIntHelp (Single c) = ord c - 48
     toIntHelp (Compose c Empty) = num*10+num
-    where
-      num = palToInt (Single c)
+      where
+        num = palToInt (Single c)
     toIntHelp (Compose c p) = num*10^((palLength (Compose c p))-1) + (palToInt p)*10 + num
-    where
-      num = palToInt (Single c)
+      where
+        num = palToInt (Single c)
 
 numberOfChanges :: Palindrom -> Int
 numberOfChanges Empty = 0
 numberOfChanges (Single c) = 0
 numberOfChanges (Compose c Empty) = 0
-numberOfChanges (Compose c1 Single c2)
+numberOfChanges (Compose c1 (Single c2))
   | c1 == c2 = 0
   | otherwise = 2
-numberOfChanges (Compose c1 Compose c2 p)
+numberOfChanges (Compose c1 (Compose c2 p))
   | c1 == c2 = numberOfChanges (Compose c2 p)
   | otherwise = 2+numberOfChanges (Compose c2 p)
