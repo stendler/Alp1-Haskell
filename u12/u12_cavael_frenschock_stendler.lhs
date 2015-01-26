@@ -42,12 +42,16 @@ die folgenden Listen und Funktionen:
 > goldbachListe :: [(Integer,Integer)]
 > goldbachListe = [head[(x,y)|x<-[2,3..z],y<-[2,3..z],x<=y,x+y==z,prim x,prim y]|z<-[4,6..]]
 
-> --golbachMax :: Integer -> Integer
-> --minForManyPairs :: Int -> Integer
+> goldbachMax :: Integer -> Integer
+> goldbachMax n = maximum[(toInteger l)|z<-[4,6..n],l<-[length[(x,y)|x<-[2,3..z],y<-[2,3..z],x<=y,x+y==z,prim x,prim y]]]
+
+> minForManyPairs :: Int -> Integer
+> minForManyPairs k = head[z|z<-[4,6..],l<-[length[(x,y)|x<-[2,3..z],y<-[2,3..z],x<=y,x+y==z,prim x,prim y]],l==k]
 
 Die erste Funktion soll eine unendliche Liste von Primzahlpaaren erzeugen deren Summe
-die Zahlen 4, 6, 8, . . . ergibt (nur ein Paar pro Zahl). Die zweite Funktion soll bei Eingabe
+die Zahlen 4, 6, 8, . . . ergibt (nur ein Paar pro Zahl).
+Die zweite Funktion soll bei Eingabe
 n die maximale Anzahl k von Primzahlpaaren (a 1 , b 1 ), (a 2 , b 2 ), . . . (a k , b k ) angeben, so
-dass a 1 ≤ b 1 , a 2 ≤ b 2 , . . . , a k ≤ b k und a 1 + b 1 = a 2 + b 2 = . . . = a k + b k = m ≤ n. Die
-dritte Funktion soll bei Eingabewert k die kleinste gerade Zahl n bestimmen, welche
+dass a 1 ≤ b 1 , a 2 ≤ b 2 , . . . , a k ≤ b k und a 1 + b 1 = a 2 + b 2 = . . . = a k + b k = m ≤ n.
+Die dritte Funktion soll bei Eingabewert k die kleinste gerade Zahl n bestimmen, welche
 mindestens k geordnete Goldbachpaare besitzt.
