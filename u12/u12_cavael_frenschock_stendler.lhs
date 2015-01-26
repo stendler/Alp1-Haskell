@@ -34,14 +34,16 @@ eruellen soll. Was bei ungeraden Eingabewerten passiert ist egal.
 > sqrtI n = intSqrt n 0
 
 > goldbachSumme :: Integer -> [(Integer,Integer)]
-> goldbachSumme i = [(x,y)|x<-[0..i],y<-[0..i],x<=y,x+y==i,prim x,prim y];
+> goldbachSumme i = [(x,y)|x<-[0..i],y<-[0..i],x<=y,x+y==i,prim x,prim y]
 
 b) Definieren Sie in einer Zeile (d.h. ohne Rekursion und nur mit prim als Hilfsfunktion)
 die folgenden Listen und Funktionen:
 
-golbachListe :: [(Integer,Integer)]
-golbachMax :: Integer -> Integer
-minForManyPairs :: Int -> Integer
+> goldbachListe :: [(Integer,Integer)]
+> goldbachListe = [head[(x,y)|x<-[2,3..z],y<-[2,3..z],x<=y,x+y==z,prim x,prim y]|z<-[4,6..]]
+
+> --golbachMax :: Integer -> Integer
+> --minForManyPairs :: Int -> Integer
 
 Die erste Funktion soll eine unendliche Liste von Primzahlpaaren erzeugen deren Summe
 die Zahlen 4, 6, 8, . . . ergibt (nur ein Paar pro Zahl). Die zweite Funktion soll bei Eingabe
